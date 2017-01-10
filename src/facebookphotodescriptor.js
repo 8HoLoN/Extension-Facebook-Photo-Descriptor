@@ -106,6 +106,7 @@ const emoji_map = {
         });
 
         _photos.map(function(_x){
+            _x.setAttribute("data-prev-alt", _x.alt);
             const altText = _x.alt.split(': ')[1];
             // us,uk,fr,de,es
             const tags = altText.split(/, | and | und | et | e /);
