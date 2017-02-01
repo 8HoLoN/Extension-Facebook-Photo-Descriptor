@@ -84,32 +84,42 @@ const emoji_map = {
         const that = this;
         const observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
-                        //console.log("new");
-                        that.show();
+                    //console.log('type',mutation.type);
+                    //console.log("new change");
+                    //console.log(mutation.target)
+                    that.show(mutation.target);
+                    /*
+                    setTimeout(function(){
+                        //that.show(mutation.target);
+                        //show_facebook_cv_tags(mutation.target);
+                    },1500);
+                    //*/
                 });
         });
 
-        const config = { attributes: true, childList: true, characterData: false };
+        const config = { attributes: true, childList: true, characterData: false, attributeFilter: ["src"], subtree: true };
 
         observer.observe(document.body, config);
 
-        that.show();
+        that.show(document);
     }
 
-    Fpd.prototype.show = function(){
-        let _photos = [...document.getElementsByTagName('img')];
+    Fpd.prototype.show = function(_root){
+        let _photos = Array.from(_root.querySelectorAll('img.img'));
+        _photos = _photos.concat(Array.from(_root.querySelectorAll('img.spotlight')));
 
         _photos = _photos.filter((_x)=>{
             return !_x.hasAttribute("data-prev-alt") || ( _x.getAttribute("data-prev-alt") !== _x.getAttribute("alt") );
         }).filter((_x)=>{
-            return !!~_x.alt.indexOf(':');
+            return !!~_x.alt.indexOf(':')||!!~_x.alt.indexOf('能有');
         });
 
         _photos.map(function(_x){
             _x.setAttribute("data-prev-alt", _x.alt);
-            const altText = _x.alt.split(': ')[1];
-            // us,uk,fr,de,es
-            const tags = altText.split(/, | and | und | et | e /);
+            const altText = _x.alt.split(': ')[1]||_x.alt.split(':')[1]||_x.alt.split('能有')[1];
+
+            // us,uk,fr,de,es,it,jp, ko
+            const tags = altText.split(/, | and | und | et | e |、/);
 
             let html = "<ul style='position:absolute;top:10px;right:10px;padding:5px;font-size:12px;line-height:1.8;background-color:rgba(0,0,0,0.7);color:#fff;border-radius:5px'>";
             tags.forEach(function(tag){

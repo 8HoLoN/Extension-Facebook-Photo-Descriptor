@@ -1,9 +1,9 @@
 {
   "name": "Facebook Photo Descriptor",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "manifest_version": 2,
   "default_locale": "en",
-  "description": "Display Facebook photo description for all languages",
+  "description": "Display Facebook photo description for all languages (us, uk, fr, de, es, it, jp, ko, cn, etc.)",
   "permissions": [
     "http://www.facebook.com/*", "https://www.facebook.com/*"
   ],
